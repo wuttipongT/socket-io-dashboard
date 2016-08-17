@@ -1,0 +1,147 @@
+﻿
+<div class="row" style="padding:0;margin:0;">
+    <div class="col-md-12" style="background-color:antiquewhite;vertical-align:middle;height: 72px;">
+        <a class="navbar-brand" href="#" style="font-size:25px;float:left;padding-top: 9px">
+            <img alt="SCG Dashboard" width="220" src="../images/SCGLogistics.png">
+        </a>
+        <div style="overflow:hidden;  text-align: center;">
+            <h2 style="display:inline-block;margin-left:-80px;margin-top: 20px;">สถานะรถขารับสินค้า</h2>
+        </div>
+    </div>
+    <div class="col-md-7" style="padding:0;border-right:5px solid #000000;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="11" style="vertical-align: middle;text-align: center;border-right:10px!important;background-color:#FFF;color:#000!important;padding: 10px;">สถานะงานช่องโหลดสินค้า</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประตู</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ปลายทาง</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">Shipment</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">คันที่</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียนรถ</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า</th>
+                <th colspan="2" style="text-align: center;">เวลาโหลดสินค้าขึ้น</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะประตู</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เข้าจริง</th>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เวลาจริง</th>
+            </tr>
+            <tr ng-repeat="outb in outbounds_tb1" ng-class="">
+                <td>{{outb.Gate}}&nbsp;</td>
+                <td>{{outb.ROUT_IX}}</td>
+                <td>{{outb.SHI_NO}}</td>
+                <td>{{outb.SEQCAR}}</td>
+                <td>{{outb.Type_Car}}</td>
+                <td>{{outb.License}}</td>
+                <td>{{outb.Plan_In}}</td>
+                <td ng-class="outb.class.style1">{{outb.Time_In}}</td>
+                <td>{{outb.Plan_Load}}</td>
+                <td ng-class="outb.class.style2">{{outb.Time_Load}}</td>
+                <td>{{outb.Status_Gate}}</td>
+                <!--<td>1</td>
+                <td>Hub-14</td>
+                <td>4W</td>
+                <td>xxx</td>
+                <td>13:00</td>
+                <td>13:05</td>
+                <td>0:45</td>
+                <td>########</td>
+                <td>ยกเลิก</td>-->
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-5" style="padding:0;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="8" style="vertical-align: middle;text-align: center;background-color:#FFF;color:#000!important;padding: 10px; border-left:none; box-shadow: none;">สถานะรถ</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ปลายทาง</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียนรถ</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า</th>
+                
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะรถ</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เวลาจริง</th>
+            
+            </tr>
+            <tr ng-repeat="outb2 in outbounds_tb2">
+                <td>{{outb2.ROUT_IX}}&nbsp;</td>
+                <td>{{outb2.Type_Car}}</td>
+                <td>{{outb2.License}}</td>
+                <td>{{outb2.Plan_In}}</td>
+                <td ng-class="outb2.style3">{{outb2.Time_In}}</td>
+                <td>{{outb2.Status_Gate}}</td>
+            </tr>
+        </table>
+    </div>
+    <ul ng-if="vm.pager.pages.length" class="pagination">
+        <li ng-class="{disabled:vm.pager.currentPage === 1}">
+            <a ng-click="vm.setPage(1)">First</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === 1}">
+            <a ng-click="vm.setPage(vm.pager.currentPage - 1, vm.gate)">Previous</a>
+        </li>
+        <li ng-repeat="page in vm.pager.pages" ng-class="{active:vm.pager.currentPage === page}">
+            <a ng-click="vm.setPage(page)">{{page}}</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+            <a ng-click="vm.setPage(vm.pager.currentPage + 1)">Next</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+            <a ng-click="vm.setPage(vm.pager.totalPages)">Last</a>
+        </li>
+    </ul>
+    <div style="color:#FFF; margin-top:-10px;">Copyright © 2016 Fulfill IT Solution Company Limited, All Rights Reserved.</div>
+</div>
+<style>
+    table {
+        border: 1px solid #ffffff !important;
+        color: #ffffff !important;
+    }
+
+        table th {
+            border: 1px solid #ffffff !important;
+            background-color: royalblue;
+        }
+
+        table td {
+            color: #ffffff !important;
+            text-align: center;
+            border: 1px solid #fff;
+            padding: 20px;
+            -moz-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+            -webkit-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+        }
+
+    .highlight1 {
+        background-color: rgba(255,255,255,.2);
+    }
+
+    .highlight2 {
+        background-color: transparent;
+    }
+
+    .red {
+        background-color: red;
+        color: black !important;
+    }
+
+    .green {
+        background-color: green;
+        color: black !important;
+    }
+
+    .yellow {
+        background-color: yellow;
+        color: black !important;
+    }
+</style>

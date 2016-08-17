@@ -1,0 +1,1 @@
+F:\GitHub\IODashboard\IODashboard\IODashboard\bin\Microsoft.NodejsTools.WebRole.dll

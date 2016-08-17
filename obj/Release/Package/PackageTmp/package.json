@@ -1,0 +1,27 @@
+{
+  "name": "iodashboard",
+  "version": "0.0.0",
+  "description": "IODashboard",
+  "main": "server.js",
+  "author": {
+    "name": "Bed Wuttipong"
+  },
+  "dependencies": {
+    "angularjs": "0.0.1",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "csurf": "^1.9.0",
+    "express": "^4.14.0",
+    "express-favicon": "^1.0.1",
+    "express-stormpath": "^3.1.3",
+    "express_logger": "0.0.4",
+    "forms": "^1.1.4",
+    "gyp": "^0.5.0",
+    "jade": "^1.11.0",
+    "mssql": "^3.3.0",
+    "path": "^0.12.7",
+    "socket.io": "^1.4.8",
+    "tds": "^0.1.0",
+    "xtend": "^4.0.1"
+  }
+}

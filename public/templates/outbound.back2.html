@@ -1,0 +1,105 @@
+﻿
+<div class="row" style="padding:0;margin:0;">
+    <div class="col-md-12" ng-controller="TimeCtrl" style="background-color:antiquewhite;vertical-align:middle;">
+        <p style="font-size:25px;float:left;">SCG Dashboard</p>
+      <!--  <p style="font-size:25px;float:right;">{{ clock | date:'HH:mm:ss'}}</p>-->
+    </div>
+    <div class="col-md-7" style="padding:0;border-right:5px solid #000000;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="9" style="vertical-align: middle;text-align: center;border-right:10px!important;background-color:#FFF;color:#000!important;padding: 10px;">สถานะงานช่องโหลดสินค้า</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประตู</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สินค้า</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียนรถ</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า</th>
+                <th colspan="2" style="text-align: center;">เวลาในการโหลด</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะประตู</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เข้าจริง</th>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เวลาจริง</th>
+            </tr>
+            <tr ng-repeat="gap in inbounds_tb1" ng-class="gap.sku=='' ? 'highlight2' : 'highlight1'">
+                <td>{{gap.Gate}}</td>
+                <td>{{gap.SKU}}</td>
+                <td>{{gap.Type_Car}}</td>
+                <td>{{gap.Lisence}}</td>
+                <td>{{gap.Plan_In}}</td>
+                <td id="tdIn" ng-class="gap.class">{{gap.Time_In}}</td>
+                <td id="tdLoad">{{gap.Plan_Load}}</td>
+                <td>{{gap.Time_Load}}</td>
+                <td>{{gap.Status_Gate}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-5" style="padding:0;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="6" style="vertical-align: middle;text-align: center;background-color:#FFF;color:#000!important;padding: 10px; border-left:none; box-shadow: none;">สถานะรถ</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สินค้า</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียน</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า-ออก</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะรถ</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เข้าจริง</th>
+            </tr>
+            <tr ng-repeat="car in inbounds_tb2">
+                <td>{{car.Sku}} &nbsp; </td>
+                <td>{{car.Type_Car}}</td>
+                <td>{{car.License}}</td>
+                <td>{{car.Plan_In}}</td>
+                <td>{{car.Time_In}}</td>
+                <td>{{car.Status_Gate}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<style>
+    table {
+        border: 1px solid #ffffff !important;
+        color: #ffffff !important;
+    }
+
+        table th {
+            border: 1px solid #ffffff !important;
+            background-color: royalblue;
+        }
+
+        table td {
+            color: #ffffff !important;
+            text-align: center;
+            border: 1px solid #fff;
+            padding: 20px;
+            -moz-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+        }
+    .highlight1 {
+        background-color:rgba(255,255,255,.2);
+    }
+    .highlight2 {
+        background-color:transparent;
+    }
+    .red {
+        background-color:red;
+        color:black !important;
+    }
+    .green {
+        background-color:green;
+        color:black !important;
+    }
+    .yellow{
+        background-color:yellow;
+        color:black !important;
+    }
+</style>

@@ -1,0 +1,127 @@
+﻿
+<div class="row" style="padding:0;margin:0;">
+    <div class="col-md-12" style="background-color:antiquewhite;vertical-align:middle;height: 72px;">
+        <a class="navbar-brand" href="#" style="font-size:25px;float:left;padding-top: 9px">
+            <img alt="SCG Dashboard" width="220" src="../images/SCGLogistics.png">
+        </a>
+        <div style="overflow:hidden;  text-align: center;">
+            <h2 style="display:inline-block;margin-left:-80px;margin-top: 20px;">สถานะรถขาส่งสินค้า</h2>
+        </div>
+    </div>
+    <div class="col-md-7" style="padding:0;border-right:5px solid #000000;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="9" style="vertical-align: middle;text-align: center;border-right:10px!important;background-color:#FFF;color:#000!important;padding: 10px;">สถานะงานช่องขาเข้า</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประตู</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สินค้า</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียนรถ</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า</th>
+                <th colspan="2" style="text-align: center;">เวลาโหลดสินค้าลง</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะประตู</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เข้าจริง</th>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เวลาจริง</th>
+            </tr>
+            <tr ng-repeat="inb in inbounds_tb1" ng-class="gap.Sku=='' ? 'highlight2' : 'highlight1'">
+                <td>{{inb.Gate}}&nbsp;</td>
+                <td>{{inb.Sku}}&nbsp;</td>
+                <td>{{inb.Type_Car}}&nbsp;</td>
+                <td>{{inb.License}}&nbsp;</td>
+                <td>{{inb.Plan_In}}</td>
+                <td ng-class="inb.style1">{{inb.Time_In}}&nbsp;</td>
+                <td>{{inb.Plan_Load}}&nbsp;</td>
+                <td ng-class="inb.style2">{{inb.Time_Load}}&nbsp;</td>
+                <td>{{inb.Status_Gate}}&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-5" style="padding:0;">
+        <table class="table" style="border-collapse: collapse;">
+            <tr>
+                <td colspan="6" style="vertical-align: middle;text-align: center;background-color:#FFF;color:#000!important;padding: 10px; border-left:none; box-shadow: none;">สถานะรถขาเข้า</td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สินค้า</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ประเภทรถ</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">ทะเบียน</th>
+                <th colspan="2" style="text-align: center;">เวลารถเข้า-ออก</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">สถานะรถ</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">แผน</th>
+                <th style="text-align: center;">เข้าจริง</th>
+            </tr>
+            <tr ng-repeat="inb in inbounds_tb2">
+                <td>{{inb.Sku}} &nbsp; </td>
+                <td>{{inb.Type_Car}}&nbsp;</td>
+                <td>{{inb.License}}&nbsp;</td>
+                <td>{{inb.Plan_In}}&nbsp;</td>
+                <td ng-class="inb.style3">{{inb.Time_In}}&nbsp;</td>
+                <td>{{inb.Status_Gate}}&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <ul ng-if="vm.pager.pages.length" class="pagination">
+        <li ng-class="{disabled:vm.pager.currentPage === 1}">
+            <a ng-click="vm.setPage(1)">First</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === 1}">
+            <a ng-click="vm.setPage(vm.pager.currentPage - 1, vm.gate)">Previous</a>
+        </li>
+        <li ng-repeat="page in vm.pager.pages" ng-class="{active:vm.pager.currentPage === page}">
+            <a ng-click="vm.setPage(page)">{{page}}</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+            <a ng-click="vm.setPage(vm.pager.currentPage + 1)">Next</a>
+        </li>
+        <li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+            <a ng-click="vm.setPage(vm.pager.totalPages)">Last</a>
+        </li>
+    </ul>
+    <div style="color:#FFF; margin-top:-10px;">Copyright © 2016 Fulfill IT Solution Company Limited, All Rights Reserved.</div>
+</div>
+<style>
+    table {
+        border: 1px solid #ffffff !important;
+        color: #ffffff !important;
+    }
+
+        table th {
+            border: 1px solid #ffffff !important;
+            background-color: royalblue;
+        }
+
+        table td {
+            color: #ffffff !important;
+            text-align: center;
+            border: 1px solid #fff;
+            padding: 20px;
+            -moz-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 4px rgba(255, 255, 255, 0.4);
+        }
+    .highlight1 {
+        background-color:rgba(255,255,255,.2);
+    }
+    .highlight2 {
+        background-color:transparent;
+    }
+    .red {
+        background-color:red;
+        color:black !important;
+    }
+    .green {
+        background-color:green;
+        color:black !important;
+    }
+    .yellow{
+        background-color:yellow;
+        color:black !important;
+    }
+</style>
