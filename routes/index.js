@@ -1,11 +1,10 @@
 ﻿var sql = require('mssql');
 var dbConfig = {
-    server: '192.168.1.47\\MSSQL2014EX', //192.168.1.42\\MSSQL2014EX192.168.194.1
-    database: 'KLS_Booking',
-    user: 'sa',
-    password: 'root',//fulfill
+    server: 'your-server-name', // e.g., 'localhost\\SQLEXPRESS'
+    database: 'your-database-name',
+    user: 'your-username',
+    password: 'your-password',//fulfill
     // You can use 'localhost\\instance' to connect to named instance 
-
     port: 1433
 };
 
@@ -25,14 +24,14 @@ exports.inboundView = function (req, res) {
             return;
         }
         var arrObj = [];
-        req.query("SELECT * FROM V_KPI_INB", function (err, recordset) {//TRST_ID = 7
+        req.query("SELECT * FROM InboundData", function (err, recordset) {//TRST_ID = 7
             if (err) {
                 console.log(err);
 
             } else {
                 arrObj.push(recordset);
 
-                req.query("SELECT * FROM V_KPI_INB_Right ORDER BY Plan_In ASC", function (err2, recordset2) {//TRST_ID = 7
+                req.query("SELECT * FROM InboundDetails ORDER BY CreatedAt ASC", function (err2, recordset2) {//TRST_ID = 7
                     if (err2) {
                         console.log(err2);
 
@@ -41,7 +40,7 @@ exports.inboundView = function (req, res) {
                         res.json(arrObj);
                     }
                     conn.close();
-                }); 
+                });
             }
         });
     });
@@ -56,12 +55,12 @@ exports.outboundView = function (req, res) {
             return;
         }
         var arrObj = [];
-        req.query("SELECT * FROM V_KPI_OUTB", function (err, recordset) {//TRST_ID = 7
+        req.query("SELECT * FROM OutboundData", function (err, recordset) {
             if (err) {
                 console.log(err);
             } else {
                 arrObj.push(recordset);
-                req.query("SELECT * FROM V_KPI_OUTB_Right ORDER BY Plan_In ASC", function (err2, recordset2) {//TRST_ID = 7
+                req.query("SELECT * FROM OutboundDetails ORDER BY CreatedAt ASC", function (err2, recordset2) {//TRST_ID = 7
                     if (err2) {
                         console.log(err2);
 
@@ -81,22 +80,21 @@ exports.inboundLeft = function (socket) {
         var conn = new sql.Connection(dbConfig);
         var req = new sql.Request(conn);
         conn.connect(function (err) {
-            // socket.broadcast.emit('inbound', { data: '555' });
-            req.query("SELECT TOP 1 * FROM dbo.NOTC WHERE Active = 1 AND Process='inboundLeft'", function (err, rows, fields) {
+            req.query("SELECT TOP 1 * FROM Notification WHERE Active = 1 AND Process='inboundLeft'", function (err, rows, fields) {
                 if (err) {
                     throw err;
                     // console.log(err);
                 } else {
                     if (rows.length > 0) {
-                        req.query("SELECT * FROM V_KPI_INB", function (err, rows, fields) {//TRST_ID = 7
+                        req.query("SELECT * FROM InboundData", function (err, rows, fields) {//TRST_ID = 7
                             if (err) {
                                 console.log(err2);
 
                             } else {
-                                if (rows.length > 0){
+                                if (rows.length > 0) {
                                     socket.volatile.emit('inbound', rows);
                                     exports.UpdateMessage('inboundLeft');
-                                    
+
                                 }
                                 conn.close();
                             }
@@ -112,12 +110,12 @@ exports.inboundRight = function (socket) {
         var conn = new sql.Connection(dbConfig);
         var req = new sql.Request(conn);
         conn.connect(function (err) {
-            req.query("SELECT TOP 1 * FROM dbo.NOTC WHERE Active = 1 AND Process='inboundRight'", function (err, rows, fields) {
+            req.query("SELECT TOP 1 * FROM Notification WHERE Active = 1 AND Process='inboundRight'", function (err, rows, fields) {
                 if (err) {
                     throw err;
                 } else {
                     if (rows.length > 0) {
-                        req.query("SELECT * FROM V_KPI_INB_Right ORDER BY Plan_In", function (err2, recordset2) {//TRST_ID = 7
+                        req.query("SELECT * FROM InboundDetails ORDER BY CreatedAt", function (err2, recordset2) {//TRST_ID = 7
                             if (err2) {
                                 console.log(err2);
 
@@ -131,7 +129,7 @@ exports.inboundRight = function (socket) {
                     }
                 }
             });
-            
+
         });
     }, 1000 * 22);
 }
@@ -140,16 +138,14 @@ exports.outboundLeft = function (socket) {
         var conn = new sql.Connection(dbConfig);
         var req = new sql.Request(conn);
         conn.connect(function (err) {
-            // socket.broadcast.emit('inbound', { data: '555' });
-            req.query("SELECT TOP 1 * FROM dbo.NOTC WHERE Active = 1 AND Process='outboundLeft'", function (err, rows, fields) {
+            req.query("SELECT TOP 1 * FROM Notification WHERE Active = 1 AND Process='outboundLeft'", function (err, rows, fields) {
                 if (err) {
                     throw err;
                 } else {
                     if (rows.length > 0) {
-                        req.query("SELECT * FROM dbo.V_KPI_OUTB ", function (err, rows, fields) {
+                        req.query("SELECT * FROM InboundData ", function (err, rows, fields) {
                             if (err) {
                                 throw err;
-                                // console.log(err);
 
                             } else {
                                 if (rows.length > 0) {
@@ -167,32 +163,32 @@ exports.outboundLeft = function (socket) {
     }, 1000 * 20);
 };
 exports.outboundRight = function (socket) {
-        var refreshId = setInterval(function () {
-            var conn = new sql.Connection(dbConfig);
-            var req = new sql.Request(conn);
-            conn.connect(function (err) {
-                req.query("SELECT TOP 1 * FROM dbo.NOTC WHERE Active = 1 AND Process='outboundRight'", function (err, rows, fields) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        if (rows.length > 0) {
-                            req.query("SELECT * FROM V_KPI_OUTB_Right ORDER BY Plan_In", function (err, rows, fields) {//TRST_ID = 7
-                                if (err) {
-                                    throw err
+    var refreshId = setInterval(function () {
+        var conn = new sql.Connection(dbConfig);
+        var req = new sql.Request(conn);
+        conn.connect(function (err) {
+            req.query("SELECT TOP 1 * FROM Notification WHERE Active = 1 AND Process='outboundRight'", function (err, rows, fields) {
+                if (err) {
+                    throw err;
+                } else {
+                    if (rows.length > 0) {
+                        req.query("SELECT * FROM OutboundDetails ORDER BY CreatedAt", function (err, rows, fields) {//TRST_ID = 7
+                            if (err) {
+                                throw err
 
-                                } else {
+                            } else {
 
-                                    socket.volatile.emit('outright', rows);
-                                    exports.UpdateMessage('outboundRight');
-                                    rows.length = 0;
-                                    conn.close();
-                                }
-                            });
-                        }
+                                socket.volatile.emit('outright', rows);
+                                exports.UpdateMessage('outboundRight');
+                                rows.length = 0;
+                                conn.close();
+                            }
+                        });
                     }
-                });
+                }
             });
-        }, 1000 * 18);
+        });
+    }, 1000 * 18);
 };
 exports.gate = function (req, res) {
     var conn = new sql.Connection(dbConfig);
@@ -202,7 +198,7 @@ exports.gate = function (req, res) {
             console.log(err);
             return;
         }
-        req.query("SELECT * FROM MGATE WHERE GATE_TYP='IN' AND Description <> ''", function (err, recordset) {
+        req.query("SELECT * FROM GATE WHERE TYPE='IN' AND Description <> ''", function (err, recordset) {
             if (err) {
                 console.log(err);
 
@@ -222,14 +218,13 @@ exports.gateout = function (req, res) {
             console.log(err);
             return;
         }
-        req.query("SELECT * FROM MGATE WHERE GATE_TYP='OUT' AND Description <> '' ", function (err, recordset) {
+        req.query("SELECT * FROM GATE WHERE TYPE='OUT' AND Description <> '' ", function (err, recordset) {
             if (err) {
                 console.log(err);
 
             } else {
                 res.json(recordset);
                 conn.close();
-                //console.log(recordset);
             }
         });
     });
@@ -243,7 +238,7 @@ exports.UpdateMessage = function (where) {
             console.log(err);
             return;
         }
-        req.query("UPDATE dbo.NOTC SET Active=0 WHERE Process='"+where+"'", function (err, recordset) {
+        req.query("UPDATE Notification SET Active=0 WHERE Process='" + where + "'", function (err, recordset) {
             if (err) {
                 console.log(err);
 
