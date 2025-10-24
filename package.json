@@ -4,7 +4,7 @@
   "description": "IODashboard",
   "main": "server.js",
   "author": {
-    "name": "Bed Wuttipong"
+    "name": "Jeff Wuttipong"
   },
   "dependencies": {
     "angularjs": "0.0.1",
